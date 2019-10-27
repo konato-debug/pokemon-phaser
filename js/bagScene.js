@@ -158,6 +158,7 @@ class bagScene extends Phaser.Scene {
 				if (this.isMainScene) {
 					this.game.scene.run('mainScene', this);
 				} else {
+					this.game.scene.getScene('battleScene').setOwnPokemonHP();
 					this.game.scene.run('battleScene', this);
 				}
 			}

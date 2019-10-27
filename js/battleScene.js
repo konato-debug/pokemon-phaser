@@ -229,8 +229,11 @@ class battleScene extends Phaser.Scene {
 				});
 			}
         });
+	}
 
-		
+	setOwnPokemonHP() {
+		this.own_pokemon_hp_text.setText(this.pokemons[this.currentPokemonIndex]["hp"] + "/" + this.pokemons[this.currentPokemonIndex]["maxHp"]);
+		this.own_pokemon_hp_bar.displayWidth = this.pokemons[this.currentPokemonIndex]["hp"] / this.pokemons[this.currentPokemonIndex]["maxHp"] * 147;
 	}
 
 	summonPokemon() {

@@ -310,6 +310,7 @@ class pokemonScene extends Phaser.Scene {
 						});
 					} else {
 						this.game.scene.stop("bagScene");
+						this.game.scene.getScene('battleScene').setOwnPokemonHP();
 						this.game.scene.run("battleScene");
 					}
 				}
@@ -334,6 +335,7 @@ class pokemonScene extends Phaser.Scene {
 			} else {
 				if (this.isBattleScene) {
 					this.game.scene.stop('pokemonScene');
+					this.game.scene.getScene('battleScene').setOwnPokemonHP();
 					this.game.scene.run('battleScene');
 				} else {
 					this.game.scene.stop('pokemonScene');
