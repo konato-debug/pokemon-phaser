@@ -1,4 +1,5 @@
 # Pokemon-Phaser
+Play here: [https://konato-debug.github.io/Pokemon-Phaser/](https://konato-debug.github.io/Pokemon-Phaser/)
 
 # Credits
 - [Phaser 3 Game Engine](https://phaser.io/)
