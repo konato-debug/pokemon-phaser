@@ -9,7 +9,7 @@ new Phaser.Game({
   physics: {
     default: 'arcade',
     arcade: {
-      debug: true
+      debug: false
     }
   }, // The physics engine to use
   plugins: {
