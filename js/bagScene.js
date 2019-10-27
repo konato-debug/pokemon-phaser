@@ -4,7 +4,6 @@ class bagScene extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image('bag-background', 'assets/bag-background.png');
 	}
 
 	create(data) {

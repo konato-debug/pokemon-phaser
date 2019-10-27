@@ -4,19 +4,6 @@ class pokemonScene extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image('background', 'assets/pokemon-menu-background.png');
-		this.load.image('pokeball', 'assets/pokemon-menu-pokeball2.png');
-		this.load.image('selected-cancel', 'assets/selected-cancel.png');
-
-		this.load.image('party-0', 'assets/party-0.png');
-		this.load.image('party-0-highlighted', 'assets/party-0-highlighted.png');
-		this.load.image('party-0-blank', 'assets/party-0-blank.png');
-
-		this.load.image('party', 'assets/party.png');
-		this.load.image('party-highlighted', 'assets/party-highlighted.png');
-		this.load.image('party-blank', 'assets/party-blank.png');
-
-		this.load.image('hp-bar', 'assets/hp_bar.png');
 	}
 
 	create(data) {

@@ -4,6 +4,7 @@ class mainScene extends Phaser.Scene {
 	}
 
 	preload() {
+		// Main scene assets
 		this.load.image("grass", "assets/FRLG_Grass.png");
 		this.load.spritesheet('player', 'assets/player.png', { frameWidth: 32, frameHeight: 48 });
 		// https://pkmn.net/?action=content&page=viewpage&id=8628&parentsection=87
@@ -17,14 +18,37 @@ class mainScene extends Phaser.Scene {
 		this.load.json('movesData', 'data/moves.json');
 		this.load.json('pokedexData', 'data/pokedex.json');
 
-		
-		
+		// Pokemon scene assets
+		this.load.image('background', 'assets/pokemon-menu-background.png');
+		this.load.image('pokeball', 'assets/pokemon-menu-pokeball2.png');
+		this.load.image('selected-cancel', 'assets/selected-cancel.png');
+
+		this.load.image('party-0', 'assets/party-0.png');
+		this.load.image('party-0-highlighted', 'assets/party-0-highlighted.png');
+		this.load.image('party-0-blank', 'assets/party-0-blank.png');
+
+		this.load.image('party', 'assets/party.png');
+		this.load.image('party-highlighted', 'assets/party-highlighted.png');
+		this.load.image('party-blank', 'assets/party-blank.png');
+
+		this.load.image('hp-bar', 'assets/hp_bar.png');
+
+		// Battle scene assets
+		this.load.image('battle-background', 'assets/battle-background3.png');
+		this.load.image('battle-bar', 'assets/battle-bar.png');
+		this.load.image('opponent-battle-bar', 'assets/opponent-battle-bar.png');
+		this.load.spritesheet('pokeball_animation', 'assets/pokeball_animation.png', { frameWidth: 40, frameHeight: 40 });
+
+		// Bag scene assets
+		this.load.image('bag-background', 'assets/bag-background.png');
+
+		// #region Loading...
 		var loading_background = this.add.graphics();
 		var progressBar = this.add.graphics();
 		var progressBox = this.add.graphics();
 		progressBox.fillStyle(0x222222, 0.8);
 		progressBox.fillRect(140, 275, 320, 50);
-		
+
 		var width = this.cameras.main.width;
 		var height = this.cameras.main.height;
 		var loadingText = this.make.text({
@@ -37,7 +61,7 @@ class mainScene extends Phaser.Scene {
 			}
 		});
 		loadingText.setOrigin(0.5, 0.5);
-		
+
 		var percentText = this.make.text({
 			x: width / 2,
 			y: height / 2 - 5,
@@ -48,7 +72,7 @@ class mainScene extends Phaser.Scene {
 			}
 		});
 		percentText.setOrigin(0.5, 0.5);
-		
+
 		var assetText = this.make.text({
 			x: width / 2,
 			y: height / 2 + 50,
@@ -63,18 +87,18 @@ class mainScene extends Phaser.Scene {
 
 		loading_background.fillStyle(0x000000, 1);
 		loading_background.fillRect(0, 0, 600, 600);
-		
+
 		this.load.on('progress', function (value) {
 			percentText.setText(parseInt(value * 100) + '%');
 			progressBar.clear();
 			progressBar.fillStyle(0xffffff, 1);
 			progressBar.fillRect(150, 285, 300 * value, 30);
 		});
-					
+
 		this.load.on('fileprogress', function (file) {
 			assetText.setText('Loading asset: ' + file.key);
 		});
-		 
+
 		this.load.on('complete', function () {
 			progressBar.destroy();
 			progressBox.destroy();
@@ -83,6 +107,7 @@ class mainScene extends Phaser.Scene {
 			assetText.destroy();
 			loading_background.destroy();
 		});
+		// #endregion
 	}
 
 	create() {

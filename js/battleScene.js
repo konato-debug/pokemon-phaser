@@ -4,11 +4,6 @@ class battleScene extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image('battle-background', 'assets/battle-background3.png');
-		this.load.image('battle-bar', 'assets/battle-bar.png');
-		this.load.image('opponent-battle-bar', 'assets/opponent-battle-bar.png');
-		this.load.spritesheet('pokeball_animation', 'assets/pokeball_animation.png', { frameWidth: 40, frameHeight: 40 });
-		this.load.image('hp-bar', 'assets/hp_bar.png');
 	}
 
 	create(data) {
