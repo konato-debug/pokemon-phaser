@@ -1,5 +1,5 @@
 # Pokemon-Phaser
-This game is inspired by the Pokemon Emerald Gameboy game.
+This game is inspired by the Pokemon Emerald Gameboy game, and created using Phaser 3 game engine.
 
 Play here: [https://konato-debug.github.io/Pokemon-Phaser/](https://konato-debug.github.io/Pokemon-Phaser/)
 
