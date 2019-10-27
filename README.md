@@ -1,4 +1,6 @@
 # Pokemon-Phaser
+This game is inspired by the Pokemon Emerald Gameboy game.
+
 Play here: [https://konato-debug.github.io/Pokemon-Phaser/](https://konato-debug.github.io/Pokemon-Phaser/)
 
 # Credits
