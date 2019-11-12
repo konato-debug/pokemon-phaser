@@ -1,7 +1,7 @@
-# Pokemon-Phaser
+# pokemon-phaser
 This game is inspired by the Pokemon Emerald Gameboy game, and created using Phaser 3 game engine.
 
-Play here: [https://konato-debug.github.io/Pokemon-Phaser/](https://konato-debug.github.io/Pokemon-Phaser/).
+Play here: [https://konato-debug.github.io/pokemon-phaser/](https://konato-debug.github.io/pokemon-phaser/).
 
 Play on desktop only.
 
@@ -13,7 +13,7 @@ I suggest [xampp](https://www.apachefriends.org/download.html).
 2. Install Xampp.
 3. Download this game's master zip.
 4. Create a folder in xampp's htdocs folder (usually "C:\xampp\htdocs").
-5. Put the game's files inside the folder you created (example: "C:\xampp\htdocs\Pokemon-Phaser").
+5. Put the game's files inside the folder you created (example: "C:\xampp\htdocs\pokemon-phaser").
 6. Run Apache.
 7. In your browser, go to "localhost/Pokemon-Phaser".
 8. Play the game.
