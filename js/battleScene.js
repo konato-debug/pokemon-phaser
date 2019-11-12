@@ -30,6 +30,26 @@ class battleScene extends Phaser.Scene {
 		this.pokeballAnim();
 		this.isFromPokemonScene = false;
 
+		
+		this.isUpPress = false;
+		this.isDownPress = false;
+		this.isLeftPress = false;
+		this.isRightPress = false;
+		this.isYesPress = false;
+		this.isNoPress = false;
+		this.isEnterPress = false;
+
+		
+
+		// Event listeners for mobile controls
+		this.events.addListener("Up", this.up, this);
+		this.events.addListener("Down", this.down, this);
+		this.events.addListener("Left", this.left, this);
+		this.events.addListener("Right", this.right, this);
+		this.events.addListener("Yes", this.yes, this);
+		this.events.addListener("No", this.no, this);
+		this.events.addListener("Enter", this.enter, this);
+
 		// Determine which wild pokemon
 		var d = Math.random();
 		var cumulative = d * this.pokemon_rarity_cumulative[this.pokemon_rarity_cumulative.length - 1];
@@ -121,6 +141,28 @@ class battleScene extends Phaser.Scene {
 		this.opponent_pokemon_sprite = this.add.image(430, 290, 'pokemon' + (this.wild_pokemon_index + 1).toString()).setScale(2.0);
 		
 		this.openingSequence();
+	}
+
+	left() {
+		this.isLeftPress = true;
+	}
+	right() {
+		this.isRightPress = true;
+	}
+	up() {
+		this.isUpPress = true;
+	}
+	down() {
+		this.isDownPress = true;
+	}
+	yes() {
+		this.isYesPress = true;
+	}
+	no() {
+		this.isNoPress = true;
+	}
+	enter() {
+		this.isEnterPress = true;
 	}
 
 	openingSequence() {
@@ -581,7 +623,7 @@ class battleScene extends Phaser.Scene {
 
 	update(time, delta) {
 		if (this.menuInitialized && !this.isTyping && !this.isAttacking && !this.pauseCursor) {
-			if (Phaser.Input.Keyboard.JustDown(this.cursors.down)) {
+			if (Phaser.Input.Keyboard.JustDown(this.cursors.down) || this.isDownPress) {
 				if (this.currentMenu == 'Menu') {
 					if (this.selectedMenu == 'Fight') {
 						this.selectedMenu = 'Pokemon';
@@ -604,8 +646,9 @@ class battleScene extends Phaser.Scene {
 						this.pp_count_text.setText(this.pokemons[this.currentPokemonIndex]["moves"][3][1] + "/15");
 					}
 				}
+				this.isDownPress = false;
 			}
-			else if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
+			else if (Phaser.Input.Keyboard.JustDown(this.cursors.up) || this.isUpPress) {
 				if (this.currentMenu == 'Menu') {
 					if (this.selectedMenu == 'Pokemon') {
 						this.selectedMenu = 'Fight';
@@ -628,8 +671,9 @@ class battleScene extends Phaser.Scene {
 						this.pp_count_text.setText(this.pokemons[this.currentPokemonIndex]["moves"][2][1] + "/15");
 					}
 				}
+				this.isUpPress = false;
 			}
-			else if (Phaser.Input.Keyboard.JustDown(this.cursors.left)) {
+			else if (Phaser.Input.Keyboard.JustDown(this.cursors.left) || this.isLeftPress) {
 				if (this.currentMenu == 'Menu') {
 					if (this.selectedMenu == 'Bag') {
 						this.selectedMenu = 'Fight';
@@ -652,8 +696,9 @@ class battleScene extends Phaser.Scene {
 						this.pp_count_text.setText(this.pokemons[this.currentPokemonIndex]["moves"][1][1] + "/15");
 					}
 				}
+				this.isLeftPress = false;
 			}
-			else if (Phaser.Input.Keyboard.JustDown(this.cursors.right)) {
+			else if (Phaser.Input.Keyboard.JustDown(this.cursors.right) || this.isRightPress) {
 				if (this.currentMenu == 'Menu') {
 					if (this.selectedMenu == 'Fight') {
 						this.selectedMenu = 'Bag';
@@ -676,9 +721,10 @@ class battleScene extends Phaser.Scene {
 						this.pp_count_text.setText(this.pokemons[this.currentPokemonIndex]["moves"][3][1] + "/15");
 					}
 				}
+				this.isRightPress = false;
 			}
 			// Press yes
-			else if (Phaser.Input.Keyboard.JustDown(this.yesKey)) {
+			else if (Phaser.Input.Keyboard.JustDown(this.yesKey) || this.isYesPress) {
 				switch (this.selectedMenu) {
 					case 'Fight':
 						this.setMenu(false);
@@ -687,43 +733,52 @@ class battleScene extends Phaser.Scene {
 						this.menuPointer.x = 30;
 						this.currentMenu = 'Fight';
 						this.selectedMenu = 'Move 1';
+						this.isYesPress = false;
 						break;
 					case 'Pokemon':
 						this.game.scene.sleep("battleScene");
 						this.game.scene.run("pokemonScene", this);
+						this.isYesPress = false;
 						break;
 					case 'Bag':
 						this.game.scene.sleep("battleScene");
 						this.game.scene.run("bagScene", this);
+						this.isYesPress = false;
 						break;
 					case 'Run':
 						this.game.scene.stop('battleScene');
 						this.game.scene.run('mainScene');
+						this.isYesPress = false;
 						break;
 					case 'Move 1':
 						this.isAttacking = true;
 						this.attack(0);
+						this.isYesPress = false;
 						break;
 					case 'Move 2':
 						this.isAttacking = true;
 						this.attack(1);
+						this.isYesPress = false;
 						break;
 					case 'Move 3':
 						this.isAttacking = true;
 						this.attack(2);
+						this.isYesPress = false;
 						break;
 					case 'Move 4':
 						this.isAttacking = true;
 						this.attack(3);
+						this.isYesPress = false;
 						break;
 				}
 			}
 			// Press no
-			else if (Phaser.Input.Keyboard.JustDown(this.noKey)) {
+			else if (Phaser.Input.Keyboard.JustDown(this.noKey) || this.isNoPress) {
 				switch (this.currentMenu) {
 					case 'Fight':
 						this.setPPMenu(false);
 						this.setMenu(true);
+						this.isNoPress = false;
 						break;
 				}
 			}

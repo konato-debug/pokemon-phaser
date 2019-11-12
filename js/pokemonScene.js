@@ -14,6 +14,15 @@ class pokemonScene extends Phaser.Scene {
 		this.cursors = this.input.keyboard.createCursorKeys();
 		this.yesKey = this.input.keyboard.addKey('A');
 		this.noKey = this.input.keyboard.addKey('B');
+
+		this.isUpPress = false;
+		this.isDownPress = false;
+		this.isLeftPress = false;
+		this.isRightPress = false;
+		this.isYesPress = false;
+		this.isNoPress = false;
+		this.isEnterPress = false;
+
 		this.selectedMenu = "0";
 		this.selectedMenu2 = null;
 		this.isSelectedMenu2 = false;
@@ -40,6 +49,15 @@ class pokemonScene extends Phaser.Scene {
 		this.party_pokemon_hp = [null, null, null, null, null, null];
 		var background = this.add.image(300, 300, 'background');
 		// #endregion
+		
+		// Event listeners for mobile controls
+		this.events.addListener("Up", this.up, this);
+		this.events.addListener("Down", this.down, this);
+		this.events.addListener("Left", this.left, this);
+		this.events.addListener("Right", this.right, this);
+		this.events.addListener("Yes", this.yes, this);
+		this.events.addListener("No", this.no, this);
+		this.events.addListener("Enter", this.enter, this);
 
 		if (this.numPokemon > 0) {
 			// 0th box
@@ -145,6 +163,28 @@ class pokemonScene extends Phaser.Scene {
 
 	}
 
+	left() {
+		this.isLeftPress = true;
+	}
+	right() {
+		this.isRightPress = true;
+	}
+	up() {
+		this.isUpPress = true;
+	}
+	down() {
+		this.isDownPress = true;
+	}
+	yes() {
+		this.isYesPress = true;
+	}
+	no() {
+		this.isNoPress = true;
+	}
+	enter() {
+		this.isEnterPress = true;
+	}
+
 	switchPokemon() {
 		this.switch_pokemon_index = parseInt(this.selectedMenu);
 		// Don't allow switching if this Pokemon is fainted
@@ -163,7 +203,7 @@ class pokemonScene extends Phaser.Scene {
 
 	update(time, delta) {
 		// Press down
-		if (Phaser.Input.Keyboard.JustDown(this.cursors.down)) {
+		if (Phaser.Input.Keyboard.JustDown(this.cursors.down) || this.isDownPress) {
 			// If Menu 2 is on
 			if (this.isSelectedMenu2) {
 				// If is battle scene
@@ -205,9 +245,10 @@ class pokemonScene extends Phaser.Scene {
 					this.party_highlight_list[parseInt(this.selectedMenu)].setVisible(true);
 				}
 			}
+			this.isDownPress = false;
 		}
 		// Press up
-		else if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
+		else if (Phaser.Input.Keyboard.JustDown(this.cursors.up) || this.isUpPress) {
 			// If Menu 2 is on
 			if (this.isSelectedMenu2) {
 				// If is battle scene
@@ -250,17 +291,19 @@ class pokemonScene extends Phaser.Scene {
 					this.party_highlight_list[parseInt(this.selectedMenu)].setVisible(true);
 				}
 			}
+			this.isUpPress = false;
 		}
 		// Press left
-		else if (Phaser.Input.Keyboard.JustDown(this.cursors.left) && !this.isSelectedMenu2) {
+		else if ((Phaser.Input.Keyboard.JustDown(this.cursors.left) || this.isLeftPress) && !this.isSelectedMenu2) {
 			this.dehighlightAll();
 			if (this.selectedMenu in ["1", "2", "3", "4", "5"]) {
 				this.selectedMenu = "0";
 				this.party_highlight_list[0].setVisible(true);
 			}
+			this.isLeftPress = false;
 		}
 		// Press right
-		else if (Phaser.Input.Keyboard.JustDown(this.cursors.right) && !this.isSelectedMenu2) {
+		else if ((Phaser.Input.Keyboard.JustDown(this.cursors.right) || this.isRightPress) && !this.isSelectedMenu2) {
 			this.dehighlightAll();
 			if (this.selectedMenu in ["0"]) {
 				if (this.numPokemon >= 2) {
@@ -268,9 +311,10 @@ class pokemonScene extends Phaser.Scene {
 					this.party_highlight_list[1].setVisible(true);
 				}
 			}
+			this.isRightPress = false;
 		}
 		// Press yes
-		else if (Phaser.Input.Keyboard.JustDown(this.yesKey)) {
+		else if (Phaser.Input.Keyboard.JustDown(this.yesKey) || this.isYesPress) {
 			// If Menu 2 is on
 			if (this.isSelectedMenu2) {
 				switch (this.selectedMenu2) {
@@ -325,9 +369,10 @@ class pokemonScene extends Phaser.Scene {
 					this.isSelectedMenu2 = true;
 				}
 			}
+			this.isYesPress = false;
 		}
 		// Press no
-		else if (Phaser.Input.Keyboard.JustDown(this.noKey)) {
+		else if (Phaser.Input.Keyboard.JustDown(this.noKey) || this.isNoPress) {
 			// If Menu 2 is on
 			if (this.isSelectedMenu2) {
 				this.setMenu2(false);
@@ -342,6 +387,7 @@ class pokemonScene extends Phaser.Scene {
 					this.game.scene.run('mainScene');
 				}
 			}
+			this.isNoPress = true;
 		}
 	}
 

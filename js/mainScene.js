@@ -132,6 +132,13 @@ class mainScene extends Phaser.Scene {
 		this.enterKey = this.input.keyboard.addKey('ENTER');
 		this.yesKey = this.input.keyboard.addKey('A');
 		this.noKey = this.input.keyboard.addKey('B');
+		this.isUpPress = false;
+		this.isDownPress = false;
+		this.isLeftPress = false;
+		this.isRightPress = false;
+		this.isYesPress = false;
+		this.isNoPress = false;
+		this.isEnterPress = false;
 
 		// Max number of pokemon is 6. At least 1 pokemon.
 		this.pokemons = [{
@@ -177,28 +184,59 @@ class mainScene extends Phaser.Scene {
 		this.initializePlayer();
 		this.initializeMenu();
 		this.toggleMenu();
+
+		// Event listeners for mobile controls
+		this.events.addListener("Up", this.up, this);
+		this.events.addListener("Down", this.down, this);
+		this.events.addListener("Left", this.left, this);
+		this.events.addListener("Right", this.right, this);
+		this.events.addListener("Yes", this.yes, this);
+		this.events.addListener("No", this.no, this);
+		this.events.addListener("Enter", this.enter, this);
+	}
+
+	left() {
+		this.isLeftPress = true;
+	}
+	right() {
+		this.isRightPress = true;
+	}
+	up() {
+		this.isUpPress = true;
+	}
+	down() {
+		this.isDownPress = true;
+	}
+	yes() {
+		this.isYesPress = true;
+	}
+	no() {
+		this.isNoPress = true;
+	}
+	enter() {
+		this.isEnterPress = true;
 	}
 
 	update(time, delta) {
 		// Moving player
 		if (!this.moving && !this.menuOn) {
-			if (Phaser.Input.Keyboard.JustDown(this.cursors.left)) {
+			if (Phaser.Input.Keyboard.JustDown(this.cursors.left) || this.isLeftPress) {
 				this.playerLeft();
 			}
-			else if (Phaser.Input.Keyboard.JustDown(this.cursors.right)) {
+			else if (Phaser.Input.Keyboard.JustDown(this.cursors.right) || this.isRightPress) {
 				this.playerRight();
 			}
-			else if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
+			else if (Phaser.Input.Keyboard.JustDown(this.cursors.up) || this.isUpPress) {
 				this.playerUp();
 			}
-			else if (Phaser.Input.Keyboard.JustDown(this.cursors.down)) {
+			else if (Phaser.Input.Keyboard.JustDown(this.cursors.down) || this.isDownPress) {
 				this.playerDown();
 			}
 		}
 
 		// Up and down menu
 		if (this.menuOn) {
-			if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
+			if (Phaser.Input.Keyboard.JustDown(this.cursors.up) || this.isUpPress) {
 				if (this.selectedMenu != 0) {
 					this.menuPointer.y -= 30;
 					this.selectedMenu -= 1;
@@ -206,8 +244,9 @@ class mainScene extends Phaser.Scene {
 					this.menuPointer.y += 30 * 2;
 					this.selectedMenu += 2;
 				}
+				this.isUpPress = false;
 			}
-			else if (Phaser.Input.Keyboard.JustDown(this.cursors.down)) {
+			else if (Phaser.Input.Keyboard.JustDown(this.cursors.down) || this.isDownPress) {
 				if (this.selectedMenu != 2) {
 					this.menuPointer.y += 30;
 					this.selectedMenu += 1;
@@ -215,9 +254,10 @@ class mainScene extends Phaser.Scene {
 					this.menuPointer.y -= 30 * 2;
 					this.selectedMenu -= 2;
 				}
+				this.isDownPress = false;
 			}
 			// Press yes
-			else if (Phaser.Input.Keyboard.JustDown(this.yesKey)) {
+			else if (Phaser.Input.Keyboard.JustDown(this.yesKey) || this.isYesPress) {
 				switch (this.selectedMenu) {
 					case 0:
 						this.toggleMenu();
@@ -233,16 +273,19 @@ class mainScene extends Phaser.Scene {
 						this.toggleMenu();
 						break;
 				}
+				this.isYesPress = false;
 			}
 			// Press no
-			else if (Phaser.Input.Keyboard.JustDown(this.noKey)) {
+			else if (Phaser.Input.Keyboard.JustDown(this.noKey) || this.isNoPress) {
 				this.toggleMenu();
+				this.isNoPress = false;
 			}
 		}
 
 		// Open menu
-		if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
+		if (Phaser.Input.Keyboard.JustDown(this.enterKey) || this.isEnterPress) {
 			this.toggleMenu();
+			this.isEnterPress = false;
 		}
 	}
 
@@ -345,6 +388,7 @@ class mainScene extends Phaser.Scene {
 					this.checkPokemonEncounter();
 				}
 				this.moving = false;
+				this.isLeftPress = false;
 			},
 			onCompleteScope: this
 		});
@@ -363,6 +407,7 @@ class mainScene extends Phaser.Scene {
 					this.checkPokemonEncounter();
 				}
 				this.moving = false;
+				this.isRightPress = false;
 			},
 			onCompleteScope: this
 		});
@@ -381,6 +426,7 @@ class mainScene extends Phaser.Scene {
 					this.checkPokemonEncounter();
 				}
 				this.moving = false;
+				this.isUpPress = false;
 			},
 			onCompleteScope: this
 		});
@@ -399,6 +445,7 @@ class mainScene extends Phaser.Scene {
 					this.checkPokemonEncounter();
 				}
 				this.moving = false;
+				this.isDownPress = false;
 			},
 			onCompleteScope: this
 		});

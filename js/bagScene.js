@@ -15,6 +15,15 @@ class bagScene extends Phaser.Scene {
 		this.isBagScene = true;
 		this.pokemons = data.pokemons;
 		this.isTyping = false;
+		
+		this.isUpPress = false;
+		this.isDownPress = false;
+		this.isLeftPress = false;
+		this.isRightPress = false;
+		this.isYesPress = false;
+		this.isNoPress = false;
+		this.isEnterPress = false;
+
 		this.isMainScene = false;
 		if ("isMainScene" in data) {
 			this.isMainScene = true;
@@ -24,6 +33,15 @@ class bagScene extends Phaser.Scene {
 		this.cursors = this.input.keyboard.createCursorKeys();
 		this.yesKey = this.input.keyboard.addKey('A');
 		this.noKey = this.input.keyboard.addKey('B');
+
+		// Event listeners for mobile controls
+		this.events.addListener("Up", this.up, this);
+		this.events.addListener("Down", this.down, this);
+		this.events.addListener("Left", this.left, this);
+		this.events.addListener("Right", this.right, this);
+		this.events.addListener("Yes", this.yes, this);
+		this.events.addListener("No", this.no, this);
+		this.events.addListener("Enter", this.enter, this);
 
 		// Interfaces
 		var background = this.add.image(300, 300, 'bag-background').setScale(2.5);
@@ -58,6 +76,28 @@ class bagScene extends Phaser.Scene {
 
 	}
 
+	left() {
+		this.isLeftPress = true;
+	}
+	right() {
+		this.isRightPress = true;
+	}
+	up() {
+		this.isUpPress = true;
+	}
+	down() {
+		this.isDownPress = true;
+	}
+	yes() {
+		this.isYesPress = true;
+	}
+	no() {
+		this.isNoPress = true;
+	}
+	enter() {
+		this.isEnterPress = true;
+	}
+
 	setMenu2(flag) {
 		this.menuPointer2.setVisible(flag);
 		this.use_text.setVisible(flag);
@@ -75,7 +115,7 @@ class bagScene extends Phaser.Scene {
 
 	update(time, delta) {
 		// Press down
-		if (Phaser.Input.Keyboard.JustDown(this.cursors.down)) {
+		if (Phaser.Input.Keyboard.JustDown(this.cursors.down) || this.isDownPress) {
 			// If menu is on
 			if (this.isOption2On) {
 				if (this.selectedOption2 != 1) {
@@ -90,9 +130,10 @@ class bagScene extends Phaser.Scene {
 					this.menuPointer.y += 40;
 				}
 			}
+			this.isDownPress = false;
 		}
 		// Press up
-		else if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
+		else if (Phaser.Input.Keyboard.JustDown(this.cursors.up) || this.isUpPress) {
 			// If menu is on
 			if (this.isOption2On) {
 				if (this.selectedOption2 != 0) {
@@ -107,9 +148,10 @@ class bagScene extends Phaser.Scene {
 					this.menuPointer.y -= 40;
 				}
 			}
+			this.isUpPress = false;
 		}
 		// Press yes
-		else if (Phaser.Input.Keyboard.JustDown(this.yesKey)) {
+		else if (Phaser.Input.Keyboard.JustDown(this.yesKey) || this.isYesPress) {
 			// If menu is on
 			if (this.isOption2On) {
 				switch (this.selectedOption2) {
@@ -121,6 +163,7 @@ class bagScene extends Phaser.Scene {
 								this.setMenu2(false);
 								this.game.scene.sleep('bagScene');
 								this.game.scene.run('pokemonScene', this);
+								this.isYesPress = false;
 								break;
 							// Pokeball
 							case 1:
@@ -131,6 +174,7 @@ class bagScene extends Phaser.Scene {
 									this.game.scene.stop('bagScene');
 									this.game.scene.run('battleScene', this);
 									this.game.scene.getScene("battleScene").catchPokemon();
+									this.isYesPress = false;
 									break;
 								}
 						}
@@ -138,28 +182,33 @@ class bagScene extends Phaser.Scene {
 					// Cancel
 					case 1:
 						this.setMenu2(false);
+						this.isYesPress = false;
 						break;
 				}
 			}
 			// If menu is not on
 			else {
 				this.setMenu2(true);
+				this.isYesPress = false;
 			}
 		}
 		// Press no
-		else if (Phaser.Input.Keyboard.JustDown(this.noKey)) {
+		else if (Phaser.Input.Keyboard.JustDown(this.noKey) || this.isNoPress) {
 			// If menu is on
 			if (this.isOption2On) {
 				this.setMenu2(false);
+				this.isNoPress = false;
 			}
 			// If menu is not on
 			else {
 				this.game.scene.stop('bagScene');
 				if (this.isMainScene) {
 					this.game.scene.run('mainScene', this);
+					this.isNoPress = false;
 				} else {
 					this.game.scene.getScene('battleScene').setOwnPokemonHP();
 					this.game.scene.run('battleScene', this);
+					this.isNoPress = false;
 				}
 			}
 		}
