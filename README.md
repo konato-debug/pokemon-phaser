@@ -1,7 +1,7 @@
 # pokemon-phaser
 This game is inspired by the Pokemon Emerald Gameboy game, and created using Phaser 3 game engine.
 
-Play here: [https://konato-debug.github.io/pokemon-phaser/](https://konato-debug.github.io/pokemon-phaser/).
+Play here: [https://konato-debug.github.io/pokemon-phaser/](https://konato-debug.github.io/pokemon-phaser/). Playable on both desktop and mobile.
 
 # How to run locally
 You need a http server.
