@@ -3,9 +3,7 @@ This game is inspired by the Pokemon Emerald Gameboy game, and created using Pha
 
 Play here: [https://konato-debug.github.io/pokemon-phaser/](https://konato-debug.github.io/pokemon-phaser/).
 
-Play on desktop only.
-
-# How to run
+# How to run locally
 You need a http server.
 I suggest [xampp](https://www.apachefriends.org/download.html).
 
